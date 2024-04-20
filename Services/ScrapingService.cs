@@ -32,13 +32,21 @@ namespace repmAPI.Services
                 int price = Convert.ToInt32(priceString);
                 prices.Add(price);
             }
-
+            prices.Sort();
             return prices;
         }
         public int GetAverage()
         {
             var prices = GetPrices();
             return prices.Sum() / prices.Count;
+        }
+        public int GetMedian()
+        {
+            var prices = GetPrices();
+
+            return prices.Count % 2 == 0 
+                ? prices[prices.Count / 2] + prices[prices.Count / 2 - 1]  
+                : prices[prices.Count / 2];
         }
     }
 }

@@ -12,7 +12,7 @@ namespace repmAPI.Controllers
         [HttpGet()] 
         public ActionResult GetAverage()
         {
-            
+            return Ok();
         }
     }
 }
