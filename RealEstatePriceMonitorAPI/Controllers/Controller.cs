@@ -20,7 +20,11 @@ namespace repmAPI.Controllers
         [HttpGet()] 
         public ActionResult GetAverage()
         {
-            return Ok(dataService.GetAverage(scrapingContext.GetPrices()));
+            return Ok(
+                dataService.GetDominants(
+                    scrapingContext.GetPrices()
+                    )
+                );
         }
     }
 }
