@@ -4,7 +4,6 @@
     {
         public int GetAverage(List<int> prices)
         {
-            
             return prices.Sum() / prices.Count;
         }
         public int GetMedian(List<int> prices)
