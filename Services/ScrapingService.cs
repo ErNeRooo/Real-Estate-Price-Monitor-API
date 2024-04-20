@@ -48,5 +48,24 @@ namespace repmAPI.Services
                 ? prices[prices.Count / 2] + prices[prices.Count / 2 - 1]  
                 : prices[prices.Count / 2];
         }
+        public List<int> GetDominants()
+        {
+            Dictionary<int, int> GroupedPrices = new Dictionary<int, int>();
+
+            IEnumerable<IGrouping<int, int>> collectionsOfPrices = GetPrices().GroupBy(price => price);
+            foreach (var collection in collectionsOfPrices) {
+                GroupedPrices.Add(collection.Key, collection.Count());
+            }
+
+            List<int> dominants = new List<int>();
+
+            var maxValue = GroupedPrices.Values.Max();
+            foreach (var pair in GroupedPrices)
+            {
+                if (pair.Value == maxValue) dominants.Add(pair.Key);
+            }
+
+            return dominants;
+        }
     }
 }

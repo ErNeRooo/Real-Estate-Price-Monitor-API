@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HtmlAgilityPack;
+using repmAPI.Services;
 
 namespace repmAPI.Controllers
 {
@@ -7,12 +8,16 @@ namespace repmAPI.Controllers
     [Route("[controller]")]
     public class Controller : ControllerBase
     {
-        
+        private ScrapingService scrapingService;
+        public Controller()
+        {
+            scrapingService = new ScrapingService();
+        }
 
         [HttpGet()] 
         public ActionResult GetAverage()
         {
-            return Ok();
+            return Ok(scrapingService.GetDominants());
         }
     }
 }
