@@ -18,7 +18,7 @@ namespace repmAPI.Controllers
         }
 
         [HttpGet("getAverage")] 
-        public ActionResult GetAverage()
+        public ActionResult<int> GetAverage()
         {
             return Ok(
                 dataService.CalculateAverage(
@@ -28,7 +28,7 @@ namespace repmAPI.Controllers
         }
         
         [HttpGet("getMedian")]
-        public ActionResult GetMedian()
+        public ActionResult<int> GetMedian()
         {
             return Ok(
                 dataService.CalculateMedian(
@@ -38,7 +38,7 @@ namespace repmAPI.Controllers
         }
         
         [HttpGet("getDominants")]
-        public ActionResult GetDominants()
+        public ActionResult<List<int>> GetDominants()
         {
             return Ok(
                 dataService.CalculateDominants(
@@ -48,7 +48,7 @@ namespace repmAPI.Controllers
         }
 
         [HttpGet("getPrices")]
-        public ActionResult GetPrices()
+        public ActionResult<List<int>> GetPrices()
         {
             return Ok(scrapingContext.GetPrices());
         }
