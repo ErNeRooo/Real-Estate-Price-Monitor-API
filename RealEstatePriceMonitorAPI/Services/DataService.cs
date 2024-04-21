@@ -8,8 +8,10 @@
         }
         public int CalculateMedian(List<int> prices)
         {
+            prices.Sort();
+
             return prices.Count % 2 == 0
-                ? prices[prices.Count / 2] + prices[prices.Count / 2 - 1]
+                ? (prices[prices.Count / 2] + prices[prices.Count / 2 - 1]) / 2
                 : prices[prices.Count / 2];
         }
         public List<int> CalculateDominants(List<int> prices)
