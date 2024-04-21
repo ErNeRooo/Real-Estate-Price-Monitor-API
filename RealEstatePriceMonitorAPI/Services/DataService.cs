@@ -32,6 +32,7 @@
                 if (pair.Value == maxValue) dominants.Add(pair.Key);
             }
 
+            dominants.Sort();
             return dominants;
         }
     }

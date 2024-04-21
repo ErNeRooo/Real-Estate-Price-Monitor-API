@@ -31,6 +31,20 @@ namespace RealEstatePriceMonitorAPI.Tests
             //assert
             Assert.Equal(expectedResult, result);
         }
+        
+        [Theory]
+        [MemberData(nameof(DataForCalculateDominants))]
+        public void CalculateDominants_ForGivenNumbers_ReturnCorrectDominants(List<int> prices, List<int> expectedResult)
+        {
+            //arrange
+            var dataService = new DataService();
+
+            //act
+            List<int> result = dataService.CalculateDominants(prices);
+
+            //assert
+            Assert.Equal(expectedResult, result);
+        }
 
         public static IEnumerable<object[]> DataForCalculateAverage()
         {
@@ -55,6 +69,14 @@ namespace RealEstatePriceMonitorAPI.Tests
             yield return new object[] { new List<int>() { 0, 4, 4, 2077, 20, 6 }, 5 };
             yield return new object[] { new List<int>() { 1, 2, 1233124, 141414, 4 , 13 }, 8 };
         }
-
+        public static IEnumerable<object[]> DataForCalculateDominants()
+        {
+            yield return new object[] { new List<int>() { 0 }, new List<int>() { 0 } };
+            yield return new object[] { new List<int>() { 1 }, new List<int>() { 1 } };
+            yield return new object[] { new List<int>() { 6, 5, 144 }, new List<int>() { 5, 6, 144 } };
+            yield return new object[] { new List<int>() { 6, 5, 5, 144 }, new List<int>() { 5 } };
+            yield return new object[] { new List<int>() { 6, 0, 0, 144 }, new List<int>() { 0 } };
+            yield return new object[] { new List<int>() { 86, 7, 2137, 86, 2137, 7, 9, 69, 1, 2, 9, 43, 86, 86, 69, 69, 2137, 86 }, new List<int>() { 86 } };
+        }
     }
 }
