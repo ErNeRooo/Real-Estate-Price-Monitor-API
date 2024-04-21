@@ -5,13 +5,13 @@ namespace repmAPI.Context
 {
     public class ScrapingContext
     {
-        private string url = "https://warszawa.nieruchomosci-online.pl/szukaj.html?3,mieszkanie,wynajem,,Olsztyn:18670&o=price,desc";
+        private string Url = "https://warszawa.nieruchomosci-online.pl/szukaj.html?3,mieszkanie,wynajem,,Olsztyn:18670&o=price,desc";
         private HtmlDocument HtmlDocument;
         public ScrapingContext()
         {
-            LoadDocument();
+            LoadDocument(Url);
         }
-        private void LoadDocument()
+        private void LoadDocument(string url)
         {
             var client = new HttpClient();
             var html = client.GetStringAsync(url).Result;
@@ -22,7 +22,22 @@ namespace repmAPI.Context
         }
         public List<int> GetPrices()
         {
+            int numberOfOffers =Convert.ToInt32(HtmlDocument.DocumentNode.SelectSingleNode("//span[@id='boxOfCounter']").InnerText.Replace(" ogłoszenia", ""));
             var priceElements = HtmlDocument.DocumentNode.SelectNodes("//p[@class='title-a primary-display']/span[1]");
+
+            for(int pageNumber = 2; priceElements.Count() < numberOfOffers; pageNumber++)
+            {
+                LoadDocument(Url + "&p=" + pageNumber.ToString());
+                var priceElementsFromNextPage = HtmlDocument.DocumentNode.SelectNodes("//p[@class='title-a primary-display']/span[1]");
+
+                foreach(var priceElementFromNextPage in priceElementsFromNextPage)
+                {
+                    priceElements.Add(priceElementFromNextPage);
+
+                    if (priceElements.Count() >= numberOfOffers) break;
+                }
+
+            }
 
             var prices = new List<int>();
 
