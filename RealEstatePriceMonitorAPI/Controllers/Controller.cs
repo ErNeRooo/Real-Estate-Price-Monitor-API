@@ -21,7 +21,7 @@ namespace repmAPI.Controllers
         public ActionResult GetAverage()
         {
             return Ok(
-                dataService.GetDominants(
+                dataService.CalculateAverage(
                     scrapingContext.GetPrices()
                     )
                 );

@@ -2,17 +2,17 @@
 {
     public class DataService
     {
-        public int GetAverage(List<int> prices)
+        public int CalculateAverage(List<int> prices)
         {
             return prices.Sum() / prices.Count;
         }
-        public int GetMedian(List<int> prices)
+        public int CalculateMedian(List<int> prices)
         {
             return prices.Count % 2 == 0
                 ? prices[prices.Count / 2] + prices[prices.Count / 2 - 1]
                 : prices[prices.Count / 2];
         }
-        public List<int> GetDominants(List<int> prices)
+        public List<int> CalculateDominants(List<int> prices)
         {
             Dictionary<int, int> GroupedPrices = new Dictionary<int, int>();
 

@@ -6,13 +6,13 @@ namespace RealEstatePriceMonitorAPI.Tests
     {
         [Theory]
         [MemberData(nameof(Data))]
-        public void GetAverage_ForGivenNumbers_ReturnCorrectAverage(List<int> prices, int expectedResult)
+        public void CalculateAverage_ForGivenNumbers_ReturnCorrectAverage(List<int> prices, int expectedResult)
         {
             //arrange
             var dataService = new DataService();
 
             //act
-            int result = dataService.GetAverage(prices);
+            int result = dataService.CalculateAverage(prices);
 
             //assert
             Assert.Equal(expectedResult, result);
