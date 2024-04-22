@@ -1,15 +1,16 @@
 ﻿using HtmlAgilityPack;
 using System;
+using System.Text;
 
 namespace repmAPI.Context
 {
     public class ScrapingContext
     {
-        private string Url = "https://warszawa.nieruchomosci-online.pl/szukaj.html?3,mieszkanie,wynajem,,Olsztyn:18670&o=price,desc";
+        private string Url = "https://warszawa.nieruchomosci-online.pl/szukaj.html?3,mieszkanie,wynajem,,CityName&o=price,desc";
         private HtmlDocument HtmlDocument;
         public ScrapingContext()
         {
-            LoadDocument(Url);
+            
         }
         private void LoadDocument(string url)
         {
@@ -20,9 +21,26 @@ namespace repmAPI.Context
 
             HtmlDocument = htmlDocument;
         }
-        public List<int> GetPrices()
+        private string removeAllCharsFromStringExceptNumbers(string givenString)
         {
-            int numberOfOffers =Convert.ToInt32(HtmlDocument.DocumentNode.SelectSingleNode("//span[@id='boxOfCounter']").InnerText.Replace(" ogłoszenia", ""));
+            StringBuilder result = new StringBuilder();
+            char[] allowedChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+            foreach (char item in givenString)
+            {
+                if (allowedChars.Contains(item)) { result.Append(item); }
+            }
+
+            return result.ToString();
+        }
+        public List<int> GetPrices(string cityName)
+        {
+            Url = Url.Replace("CityName", cityName);
+            LoadDocument(Url);
+
+            var OffersElement = HtmlDocument.DocumentNode.SelectSingleNode("//span[@id='boxOfCounter']").InnerText;
+            int numberOfOffers = Convert.ToInt32(removeAllCharsFromStringExceptNumbers(OffersElement));
+
             var priceElements = HtmlDocument.DocumentNode.SelectNodes("//p[@class='title-a primary-display']/span[1]");
 
             for(int pageNumber = 2; priceElements.Count() < numberOfOffers; pageNumber++)
@@ -43,13 +61,12 @@ namespace repmAPI.Context
 
             foreach (var priceElement in priceElements)
             {
-                string priceString = priceElement.InnerText.Replace("&nbsp;", "").Replace("zł", "");
+                string priceString = removeAllCharsFromStringExceptNumbers(priceElement.InnerText);
                 int price = Convert.ToInt32(priceString);
                 prices.Add(price);
             }
             prices.Sort();
             return prices;
         }
-
     }
 }
