@@ -21,7 +21,7 @@ namespace repmAPI.Context
 
             HtmlDocument = htmlDocument;
         }
-        private string removeAllCharsFromStringExceptNumbers(string givenString)
+        public string removeAllCharsFromStringExceptNumbers(string givenString)
         {
             StringBuilder result = new StringBuilder();
             char[] allowedChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
