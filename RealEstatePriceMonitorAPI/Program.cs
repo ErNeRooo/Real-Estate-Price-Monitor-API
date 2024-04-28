@@ -14,9 +14,21 @@ namespace repmAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "frontEnd",
+                                  policy =>
+                                  
+                                      policy.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod()
+                                  );
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            app.UseCors("frontEnd");
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -24,6 +36,7 @@ namespace repmAPI
             }
 
             app.UseHttpsRedirection();
+
 
             app.UseAuthorization();
 
