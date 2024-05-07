@@ -14,7 +14,7 @@ namespace repmAPI.Controllers
         private string[] cities = {
                 "Warszawa", "Kraków", "Wrocław", "Łódź", "Poznań", "Gdańsk", "Szczecin",
                 "Bydgoszcz", "Lublin", "Białystok", "Katowice", "Toruń", "Rzeszów",
-                "Kielce", "Olsztyn", "Gorzów Wielkopolski", "Zielona Góra", "Opole"
+                "Kielce", "Olsztyn", "Gorzów Wlk.", "Zielona Góra", "Opole"
             };
         private string NotFoundMessage = "API supports only voivodeship cities from Poland";
 
