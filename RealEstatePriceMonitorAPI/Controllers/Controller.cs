@@ -2,6 +2,9 @@
 using HtmlAgilityPack;
 using repmAPI.Services;
 using repmAPI.Context;
+using RealEstatePriceMonitor.Context;
+using RealEstatePriceMonitor.Classes;
+using Microsoft.VisualBasic;
 
 namespace repmAPI.Controllers
 {
@@ -17,11 +20,13 @@ namespace repmAPI.Controllers
                 "Kielce", "Olsztyn", "Gorzów Wielkopolski", "Zielona Góra", "Opole"
             };
         private string NotFoundMessage = "API supports only voivodeship cities from Poland";
+        private DbContext dbContext;
 
         public Controller()
         {
             scrapingContext = new ScrapingContext();
             dataService = new DataService();
+            dbContext = new DbContext();
         }
 
         [HttpGet("getAverage/{cityName}")] 
@@ -78,9 +83,21 @@ namespace repmAPI.Controllers
         [HttpGet("getPrices/{cityName}")]
         public ActionResult<List<int>> GetPrices([FromRoute] string cityName)
         {
+
             if (cities.Contains(cityName))
             {
-                return Ok(scrapingContext.GetPrices(cityName));
+                string id = "2";
+
+                var day = DateTime.Now.Day;
+                var month = DateTime.Now.Month;
+                var year = DateTime.Now.Year;
+
+                int[] prices = scrapingContext.GetPrices(cityName).ToArray();
+
+                var data = new PriceDataRecord(id, cityName, $"{day}-{month}-{year}", prices);
+
+                dbContext.add(data);
+                return Ok(prices);
             }
             else
             {
