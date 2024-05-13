@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HtmlAgilityPack;
-using repmAPI.Services;
 using repmAPI.Context;
 using RealEstatePriceMonitor.Context;
 using RealEstatePriceMonitor.Classes;
@@ -13,7 +12,6 @@ namespace repmAPI.Controllers
     public class Controller : ControllerBase
     {
         private ScrapingContext scrapingContext;
-        private DataService dataService;
         private string[] cities = {
                 "Warszawa", "Kraków", "Wrocław", "Łódź", "Poznań", "Gdańsk", "Szczecin",
                 "Bydgoszcz", "Lublin", "Białystok", "Katowice", "Toruń", "Rzeszów",
@@ -25,59 +23,7 @@ namespace repmAPI.Controllers
         public Controller()
         {
             scrapingContext = new ScrapingContext();
-            dataService = new DataService();
             dbContext = new DbContext();
-        }
-
-        [HttpGet("getAverage/{cityName}")] 
-        public ActionResult<int> GetAverage([FromRoute] string cityName)
-        {
-            if (cities.Contains(cityName))
-            {
-                return Ok(
-                dataService.CalculateAverage(
-                    scrapingContext.GetPrices(cityName)
-                    )
-                );
-            }
-            else
-            {
-                return NotFound(NotFoundMessage);
-            }
-        }
-        
-        [HttpGet("getMedian/{cityName}")]
-        public ActionResult GetMedian([FromRoute] string cityName)
-        {
-            if (cities.Contains(cityName))
-            {
-                return Ok(
-                dataService.CalculateMedian(
-                    scrapingContext.GetPrices(cityName)
-                    )
-                );
-            }
-            else
-            {
-                return NotFound(NotFoundMessage);
-            }
-        }
-        
-        [HttpGet("getDominants/{cityName}")]
-        public ActionResult<List<int>> GetDominants([FromRoute] string cityName)
-        {
-            if (cities.Contains(cityName))
-            {
-                return Ok(
-                dataService.CalculateDominants(
-                    scrapingContext.GetPrices(cityName)
-                    )
-                );
-            }
-            else
-            {
-                return NotFound(NotFoundMessage);
-            }
         }
 
         [HttpGet("getPrices/{cityName}")]
